@@ -1,14 +1,9 @@
-from flask import Flask
-# from flask_socketio import SocketIO
 import mysql.connector
 from mysql.connector import Error
 import json
 import websockets
 import asyncio
 import time
-
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'bruh'
 
 def create_connection(): # Подключение базы данных
     try:
@@ -43,31 +38,6 @@ def execute_query(connection, query):
         print("Query executed successfully")
     except Error as e:
         print(f"The error '{e}' occurred")
-
-
-# socket = SocketIO(app, cors_allowed_origins="*")
-
-
-# @socket.on('message')
-# def handle_message(msg):
-#     print(msg)
-#     socket.send('ok')
-
-# @socket.on("connect")
-# def connected():
-#     print("client has connected")
-
-# @app.route('/get_messages', methods=['POST'])
-# def get_messages():
-#     db_connect = create_connection()
-
-#     get_messages_sql = f''' SELECT * FROM `messages` '''
-#     messages = execute_read_query(db_connect, get_messages_sql)
-
-#     print(messages)
-#     db_connect.close()
-
-#     return json.dumps(messages)
 
 connected = set()
 
@@ -128,7 +98,5 @@ start_server = websockets.serve(server, 'localhost', 5001)
 # '''
 # execute_query(db_connect, workers_table_sql)
 
-# if __name__ == '__main__':
-# app.run(debug=True)
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
